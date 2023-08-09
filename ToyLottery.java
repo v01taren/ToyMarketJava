@@ -21,8 +21,17 @@ public class ToyLottery {
             availableToys.addAll(toyList);
         }
 
-        int randomIndex = random.nextInt(availableToys.size());
-        return availableToys.remove(randomIndex);
+        double totalFrequency = availableToys.stream().mapToDouble(Toy::getFrequency).sum();
+        double randomValue = random.nextDouble() * totalFrequency;
+
+        double currentFrequency = 0;
+        int index = -1;
+        while (randomValue >= currentFrequency) {
+            index++;
+            currentFrequency += availableToys.get(index).getFrequency();
+        }
+
+        return availableToys.remove(index);
     }
 
     public static void main(String[] args) {
